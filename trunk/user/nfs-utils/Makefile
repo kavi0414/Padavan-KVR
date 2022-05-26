@@ -1,7 +1,7 @@
-SRC_NAME=nfs-utils-2.5.3
+SRC_NAME=nfs-utils-2.6.1
 
-CFLAGS += -ffunction-sections -fdata-sections -fvisibility=hidden
-LDFLAGS += -Wl,--gc-sections
+CFLAGS +=$(COPT) -ffunction-sections -fdata-sections -fvisibility=hidden #`pkg-config --cflags uuid`
+LDFLAGS += -Wl,--gc-sections #`pkg-config --libs uuid`
 
 all: config_test
 	$(MAKE) -j$(HOST_NCPU) -C $(SRC_NAME)
@@ -15,7 +15,6 @@ config_test:
 
 configure:
 	( cd $(SRC_NAME) && \
-	sh ./autogen.sh ; \
 	knfsd_cv_bsd_signals=no \
 	PKG_CONFIG_PATH=$(STAGEDIR)/lib/pkgconfig \
 	./configure \
